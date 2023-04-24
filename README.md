@@ -3,9 +3,13 @@
 **El proceso típico de TDD es el siguiente:**
 
 **1**.  Escribir una prueba automatizada que describa el comportamiento que se espera del software.
+
 **2.**  Ejecutar la prueba. Esta debería fallar ya que el código aún no ha sido implementado.
+
 **3**.  Escribir el código mínimo necesario para que la prueba pase satisfactoriamente.
+
 **4.**  Ejecutar la prueba de nuevo para asegurarse de que pasa satisfactoriamente.
+
 **5.**  Refactorizar el código si es necesario.
 
 El ciclo se repite varias veces, escribiendo nuevas pruebas para describir nuevos comportamientos, desarrollando el código mínimo necesario para hacer que esas pruebas pasen y refactorizando el código si es necesario. De esta manera, se asegura que el código se escribe con pruebas de calidad y se garantiza que el software funciona correctamente según los requisitos del usuario.
