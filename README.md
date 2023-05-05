@@ -20,6 +20,6 @@ Entre los beneficios de **TDD** se incluyen la reducción de errores en el códi
 ----------------------------------------------------------------------------------------------------------------------------
 ----------------------------------------------------------------------------------------------------------------------------
 
-En Java con JUnit, uno de los hooks más comunes es el método @Before y @After, que se utilizan para configurar y limpiar el estado antes y después de cada prueba. Estos hooks se ejecutan automáticamente por JUnit antes y después de cada prueba unitaria.
+En **Java con JUnit**, uno de los hooks más comunes es el método @Before y @After, que se utilizan para configurar y limpiar el estado antes y después de cada prueba. Estos hooks se ejecutan automáticamente por JUnit antes y después de cada prueba unitaria.
 
 Aquí hay un ejemplo de cómo usar el hook @Before en una clase de prueba de JUnit:
