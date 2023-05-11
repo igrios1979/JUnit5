@@ -190,6 +190,9 @@ class CuentaTest2_cicloVida {
 
     }
 
+    @Test
+    @EnabledIfSystemProperty(named="ENV",matches = "dev")
+    void testDev() {
 
-
+    }
 }
