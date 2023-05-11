@@ -4,8 +4,10 @@ package org.ignacio.rios.models;
 
 import org.ignacio.rios.exepciones.dieneroinsuficiente;
 import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.condition.EnabledIfSystemProperty;
 
 import java.math.BigDecimal;
+import java.util.Properties;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -173,5 +175,21 @@ class CuentaTest2_cicloVida {
 
 
     }
+
+
+    @Test
+    void imprimeSystemProperties() {
+        Properties prop = System.getProperties();
+        prop.forEach((k,v)-> System.out.println(k +" ---> " + v));
+    }
+
+    @Test
+    @EnabledIfSystemProperty(named = "java.version",matches ="20") // machea con expresiones regulares
+    void systemProperties() {
+        System.out.println("Propiedades -------> version de java 20 "  );
+
+    }
+
+
 
 }
