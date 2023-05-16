@@ -4,12 +4,18 @@ package org.ignacio.rios.models;
 
 import org.ignacio.rios.exepciones.dieneroinsuficiente;
 import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.condition.EnabledIfEnvironmentVariable;
 import org.junit.jupiter.api.condition.EnabledIfSystemProperty;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 
 import java.math.BigDecimal;
+import java.util.Map;
 import java.util.Properties;
 
+import static java.math.BigDecimal.*;
 import static org.junit.jupiter.api.Assertions.*;
+import static  org.junit.jupiter.api.Assumptions.*;
 
 //@TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class CuentaTest2_cicloVida {
@@ -54,8 +60,8 @@ class CuentaTest2_cicloVida {
 
         assertNotNull(cuenta.getSaldo());
         assertEquals(1000.2235, cuenta.getSaldo().doubleValue());
-        assertFalse(cuenta.getSaldo().compareTo(BigDecimal.ZERO) < 0);
-        assertTrue(cuenta.getSaldo().compareTo(BigDecimal.ZERO) > 0);
+        assertFalse(cuenta.getSaldo().compareTo(ZERO) < 0);
+        assertTrue(cuenta.getSaldo().compareTo(ZERO) > 0);
 
     }
 
@@ -193,6 +199,84 @@ class CuentaTest2_cicloVida {
     @Test
     @EnabledIfSystemProperty(named="ENV",matches = "dev")
     void testDev() {
+
+    }
+
+    @Test
+    void obtenervaramb() {
+
+      Map<String,String> getenv =   System.getenv();
+      getenv.forEach((a,b)-> System.out.println("variables de ambiente " + a +" -- "+ b));
+
+    }
+
+    @Test
+    @EnabledIfEnvironmentVariable(named = "JAVA_HOME" ,matches = ".*jre1.8.0_351.*" )
+    void testJavaHome() {
+    }
+    @Test
+    @EnabledIfEnvironmentVariable(named = "NUMBER_OF_PROCESSORS" ,matches = "4" )
+    void testProccessorNumber() {
+    }
+
+    @Test
+    @EnabledIfEnvironmentVariable(named = "ENVIROMENT" ,matches = "dev" )
+    void testAmbiente() {
+    }
+
+
+    @ParameterizedTest(name = "numero{index} ejecuntado con valor {0} -- {argumentsWithNames}")
+    @ValueSource(strings ={"100","200","300","1000","1001"})
+    void Testdebitocta(String monto){
+        cuenta.debito(new BigDecimal(monto));
+        assertNotNull(cuenta.getSaldo());
+        assertTrue(cuenta.getSaldo().compareTo( ZERO )>0);
+    }
+
+    @Nested // inner class anidada
+    class saldoPrueba {
+        //@Test se quita la @Test en un inner
+        @DisplayName("Prueba saldo con Assumptions")
+        @RepeatedTest(value=5, name="{displayName} - Repeticion Numero  = {currentRepetition}")
+        void testSaldo(RepetitionInfo info) {
+            if(info.getCurrentRepetition()==3){
+
+                System.out.println("Estoy en la repeticion nro  ->>>>>>>>>  " + info.getCurrentRepetition());
+            }
+
+
+            boolean esDev = "dev".equals(System.getProperty("ENV"));
+            assumeTrue(esDev);
+            assertNotNull(cuenta.getSaldo());
+
+            assertEquals(1000.2235, cuenta.getSaldo().doubleValue());
+            assertFalse(cuenta.getSaldo().compareTo(ZERO) < 0);
+            assertTrue(cuenta.getSaldo().compareTo(ZERO) > 0);
+
+        }
+
+
+        //@Test
+        @DisplayName("Prueba AssumingTHAT")
+        @RepeatedTest(value=15, name="{displayName} - Repeticion Numero  = {currentRepetition} de {totalRepetitions}")
+            //Prueba con variables de entorno si falla programaticamente no se ejecuta el codigo
+        void testSaldo2() {
+            boolean esDev = "dev".equals(System.getProperty("ENV"));
+            assumingThat(esDev, () -> { // no se ejecuta si da false la variable de entorno no existe
+                assertNotNull(cuenta.getSaldo());
+                assertEquals(1000.2235, cuenta.getSaldo().doubleValue());
+                assertFalse(cuenta.getSaldo().compareTo(ZERO) < 0);
+                assertTrue(cuenta.getSaldo().compareTo(ZERO) > 0);
+                System.out.println("se ejecuto los asserts  " + " -- " + "adentro");
+
+            });
+            System.out.println("esDev = " + esDev);
+
+        }
+
+
+
+
 
     }
 }
