@@ -7,6 +7,7 @@ import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.condition.EnabledIfEnvironmentVariable;
 import org.junit.jupiter.api.condition.EnabledIfSystemProperty;
 import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvFileSource;
 import org.junit.jupiter.params.provider.ValueSource;
 
 import java.math.BigDecimal;
@@ -226,8 +227,17 @@ class CuentaTest2_cicloVida {
 
 
     @ParameterizedTest(name = "numero{index} ejecuntado con valor {0} -- {argumentsWithNames}")
-    @ValueSource(strings ={"100","200","300","1000","1001"})
+    @ValueSource(strings ={"100","200","300","1000","1001.456"})
     void Testdebitocta(String monto){
+        cuenta.debito(new BigDecimal(monto));
+        assertNotNull(cuenta.getSaldo());
+        assertTrue(cuenta.getSaldo().compareTo( ZERO )>0);
+    }
+
+
+    @ParameterizedTest(name = "numero{index} ejecuntado con valor {0} -- {argumentsWithNames}")
+    @CsvFileSource(resources = "/data.csv")
+    void TestDesdeArchivo(String monto){
         cuenta.debito(new BigDecimal(monto));
         assertNotNull(cuenta.getSaldo());
         assertTrue(cuenta.getSaldo().compareTo( ZERO )>0);
